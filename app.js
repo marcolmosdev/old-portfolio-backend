@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require("firebase-admin");
+const cors = require("cors");
 
 // Initializing Firebase
 admin.initializeApp({
@@ -23,10 +24,21 @@ const corsOptions = {
 	}
 }
 
-// route for handling requests from the Angular client
-app.get('/api/message', (req, res) => {
-	res.json({ message:
-			'Hello GEEKS FOR GEEKS Folks from the Express server!' });
+// GET method to get all works
+app.get('/api/works', cors(corsOptions), async (req, res) => {
+	const snapshot = await db.collection('works').get();
+
+	let arrayOfDocs = [];
+
+	if (snapshot.empty) {
+		console.log("No matching works.");
+	} else {
+		snapshot.forEach(doc => {
+			arrayOfDocs.push(doc.data());
+		});
+	}
+
+	res.send(arrayOfDocs);
 });
 
 app.listen(3000, () => {
