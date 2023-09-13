@@ -1,5 +1,15 @@
 const express = require('express');
 const app = express();
+const { getFirestore } = require('firebase-admin/firestore');
+const admin = require("firebase-admin");
+
+// Initializing Firebase
+admin.initializeApp({
+	credential: admin.credential.cert(JSON.parse(process.env.SERVICE_GOOGLE_ACCOUNT_KEY)),
+	databaseURL: "https://yutokqzmnidska-default-rtdb.europe-west1.firebasedatabase.app"
+});
+
+const db = getFirestore();
 
 // handling CORS
 app.use((req, res, next) => {
