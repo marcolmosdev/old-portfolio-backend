@@ -11,16 +11,17 @@ admin.initializeApp({
 
 const db = getFirestore();
 
-// handling CORS
-app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin",
-			"http://localhost:4200");
-	res.header("Access-Control-Allow-Origin",
-		"https://olmoscodes.com");
-	res.header("Access-Control-Allow-Headers",
-			"Origin, X-Requested-With, Content-Type, Accept");
-	next();
-});
+// Handling CORS
+const whitelist = ['https://olmoscodes.com', 'http://localhost:4200']
+const corsOptions = {
+	origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1) {
+			callback(null, true)
+		} else {
+			callback(new Error('Not allowed by CORS'))
+		}
+	}
+}
 
 // route for handling requests from the Angular client
 app.get('/api/message', (req, res) => {
