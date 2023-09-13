@@ -3,6 +3,8 @@ const app = express();
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require("firebase-admin");
 const cors = require("cors");
+const compression = require("compression");
+app.use(compression())
 
 // Initializing Firebase
 admin.initializeApp({
